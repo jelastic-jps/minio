@@ -1,89 +1,103 @@
 {
-	"jpsType": "install",
-	"jpsVersion": "0.6",
-	"application": {
-		"name": "Minio",
-		"homepage": "https://github.com/minio/minio",
-		"description": "Minio is an object storage server, compatible with Amazon S3 cloud storage service, best suited for storing unstructured data such as photos, videos, log files and backups.",
-		"logo": "http://goo.gl/j3T5rU",
-		"settings": {
-			"fields": [{
-				"name": "accessKey",
-				"caption": "Access Key",
-				"type": "string",
-				"inputType": "string",
-				"default": "AKIAIOSFODNN7EXAMPLE",
-				"required": "true"
-			}, {
-				"name": "secretKey",
-				"caption": "Secret Key",
-				"type": "string",
-				"inputType": "string",
-				"default": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-				"required": "true"
-			}, {
-				"name": "volumes",
-				"caption": "Volumes",
-				"type": "list",
-				"inputType": "string",
-				"values": {
-					"0": "1 local volume",
-					"6": "6 nfs volumes",
-                    "16": "16 nfs volumes"
-				},
-				"default": "0",
-				"required": "true"
-			}]
-		},
-		"env": {
-			"topology": {
-				"nodes": [{
-					"count": 1,
-					"cloudlets": 16,
-					"nodeGroup": "cp",
-					"docker": {
-						"image": "minio/minio",
-						"env": {
-							"MINIO_ACCESS_KEY": "${settings.accessKey}",
-							"MINIO_SECRET_KEY": "${settings.secretKey}"
-						},
-						"cmd": "--address :80 /export"
-					}
-				}, {
-					"count": "${settings.volumes}",
-					"cloudlets": 16,
-					"nodeGroup": "extra",
-					"docker": {
-						"image": "jelastic/storage"
-					}
-				}]
-			}
-		},
-		"onInstall": [{
-			"call": ["mount-volumes", "update-nfs-mount"]
-		}, {
-			"restartContainers": {
-				"nodeGroup": "cp"
-			}
-		}],
-		"procedures": [{
-			"id": "mount-volumes",
-			"onCall": {
-				"execScript": {
-					"type": "js",
-					"script": [
-						"//@auth \n if (${settings.volumes} == 0) return {result:0}; var resp = jelastic.env.control.GetEnvInfo('${env.envName}', session); var nodes = resp.nodes, volumes = '', n = 0; for (var i = 0; i < nodes.length; i++) { if (nodes[i].nodeGroup != 'extra') continue; var volume = '/export/volume' + n++; volumes += ' ' + volume; resp = jelastic.env.control.AddDockerVolumeByGroup('${env.envName}', session, 'cp', volume); resp = jelastic.env.file.AddMountPointByGroup('${env.envName}', session, 'cp', volume, 'nfs', null, '/data', nodes[i].id, '', false); } resp = jelastic.env.control.SetDockerRunCmd('${env.envName}', session, ${nodes.cp.first.id}, '--address :80' + volumes); return resp; "
-					]
-				}
-			}
-		}, {
-			"id": "update-nfs-mount",
-			"onCall": {
-				"execCmd": {
-					"commands": "sed -i 's/nolock/nolock,retrans=1,retry=0,bg/g' /etc/fstab",
-					"nodeGroup": "cp"
-				}
-			}
-		}]
-	}
+  "jpsType": "install",
+  "jpsVersion": "0.6",
+  "application": {
+    "name": "Minio",
+    "homepage": "https://github.com/minio/minio",
+    "description": "Minio is an object storage server, compatible with Amazon S3 cloud storage service, best suited for storing unstructured data such as photos, videos, log files and backups.",
+    "logo": "http://goo.gl/j3T5rU",
+    "settings": {
+      "fields": [
+        {
+          "name": "accessKey",
+          "caption": "Access Key",
+          "type": "string",
+          "inputType": "string",
+          "default": "AKIAIOSFODNN7EXAMPLE",
+          "required": "true"
+        },
+        {
+          "name": "secretKey",
+          "caption": "Secret Key",
+          "type": "string",
+          "inputType": "string",
+          "default": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+          "required": "true"
+        },
+        {
+          "name": "volumes",
+          "caption": "Volumes",
+          "type": "list",
+          "inputType": "string",
+          "values": {
+            "0": "1 local volume",
+            "6": "6 nfs volumes",
+            "16": "16 nfs volumes"
+          },
+          "default": "0",
+          "required": "true"
+        }
+      ]
+    },
+    "env": {
+      "topology": {
+        "nodes": [
+          {
+            "count": 1,
+            "cloudlets": 16,
+            "nodeGroup": "cp",
+            "docker": {
+              "image": "minio/minio",
+              "env": {
+                "MINIO_ACCESS_KEY": "${settings.accessKey}",
+                "MINIO_SECRET_KEY": "${settings.secretKey}"
+              },
+              "cmd": "--address :80 /export"
+            }
+          },
+          {
+            "count": "${settings.volumes}",
+            "cloudlets": 16,
+            "nodeGroup": "extra",
+            "docker": {
+              "image": "jelastic/storage"
+            }
+          }
+        ]
+      }
+    },
+    "onInstall": [
+      {
+        "call": [
+          "mount-volumes",
+          "update-nfs-mount"
+        ]
+      },
+      {
+        "restartContainers": {
+          "nodeGroup": "cp"
+        }
+      }
+    ],
+    "procedures": [
+      {
+        "id": "mount-volumes",
+        "onCall": {
+          "execScript": {
+            "type": "js",
+            "script": "https://github.com/jelastic-jps/minio/blob/master/mount-volumes.js"
+          }
+        }
+      },
+      {
+        "id": "update-nfs-mount",
+        "onCall": {
+          "execCmd": {
+            "commands": "sed -i 's/nolock/nolock,retrans=1,retry=0,bg/g' /etc/fstab",
+            "nodeGroup": "cp"
+          }
+        }
+      }
+    ]
+  }
 }
