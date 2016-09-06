@@ -5,7 +5,7 @@
     "name": "Minio",
     "homepage": "https://github.com/minio/minio",
     "description": "Minio is an object storage server, compatible with Amazon S3 cloud storage service, best suited for storing unstructured data such as photos, videos, log files and backups.",
-    "logo": "https://github.com/jelastic-jps/minio/raw/master/minio-logo-70x70.png",
+    "logo": "https://github.com/jelastic-jps/minio/raw/master/images/minio-logo-70x70.png",
     "settings": {
       "fields": [
         {
