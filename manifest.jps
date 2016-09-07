@@ -85,7 +85,7 @@
         "onCall": {
           "execScript": {
             "type": "js",
-            "script": "https://github.com/jelastic-jps/minio/blob/master/mount-volumes.js"
+            "script": "https://github.com/jelastic-jps/minio/raw/master/mount-volumes.js"
           }
         }
       },
