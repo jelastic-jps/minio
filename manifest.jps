@@ -93,7 +93,7 @@
         "id": "update-nfs-mount",
         "onCall": {
           "execCmd": {
-            "commands": "sed -i 's/nolock/nolock,retrans=1,retry=0,bg/g' /etc/fstab",
+            "commands": "sed -i 's/nolock/nolock,retrans=1,bg/g' /etc/fstab",
             "nodeGroup": "cp"
           }
         }
