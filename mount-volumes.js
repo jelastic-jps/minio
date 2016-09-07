@@ -1,6 +1,6 @@
 //@auth 
 
-if (${settings.volumes} == 0) return {result:0};
+if ('${settings.volumes}' == 0) return {result:0};
 
 var resp = jelastic.env.control.GetEnvInfo('${env.envName}', session); 
 var nodes = resp.nodes, volumes = '', n = 0; 
