@@ -9,6 +9,19 @@
     "settings": {
       "fields": [
         {
+          "name": "volumes",
+          "caption": "Volumes",
+          "type": "list",
+          "inputType": "string",
+          "values": {
+            "0": "1 local volume",
+            "6": "6 nfs volumes",
+            "16": "16 nfs volumes"
+          },
+          "default": "0",
+          "required": "true"
+        },
+        {
           "name": "accessKey",
           "caption": "Access Key",
           "type": "string",
@@ -22,19 +35,6 @@
           "type": "string",
           "inputType": "string",
           "default": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-          "required": "true"
-        },
-        {
-          "name": "volumes",
-          "caption": "Volumes",
-          "type": "list",
-          "inputType": "string",
-          "values": {
-            "0": "1 local volume",
-            "6": "6 nfs volumes",
-            "16": "16 nfs volumes"
-          },
-          "default": "0",
           "required": "true"
         }
       ]
