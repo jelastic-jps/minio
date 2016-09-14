@@ -16,7 +16,7 @@
 					"1": "1 server",
 					"4": "4 servers",
 					"8": "8 servers",
-          "16": "16 servers"
+                    "16": "16 servers"
 				},
 				"default": "4",
 				"required": "true"
@@ -43,11 +43,11 @@
 					"cloudlets": 16,
 					"nodeGroup": "cp",
 					"docker": {
-						"image": "minio/minio:edge",
+						"image": "sych74/minio:test",
 						"env": {
 							"MINIO_ACCESS_KEY": "${settings.accessKey}",
 							"MINIO_SECRET_KEY": "${settings.secretKey}",
-              "PORT": "80"
+                            "PORT": "80"
 						},
 						"cmd": "/export --address :$PORT"
 					}
