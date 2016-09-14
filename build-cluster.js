@@ -10,13 +10,15 @@ for (var i = 0; i < nodes.length; i++) {
   IPs.push(nodes[i].address + ':' + path);
 } 
 
+resp = [];
 for (var i = 0; i < nodes.length; i++) { 
     if (nodes[i].nodeGroup != nodeGroup) continue; 
-    jelastic.env.control.SetDockerEnvVars(envName, session, nodes[i].id, '{"SERVERS":'+IPs.join(' ')+'}');
+    resp.push(jelastic.env.control.SetDockerEnvVars(envName, session, nodes[i].id, '{"SERVERS":'+IPs.join(' ')+'}'));
 }
 
 
 
 return {
-    result: 0
+    result: 0,
+    response: resp
 }
