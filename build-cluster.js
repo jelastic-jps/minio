@@ -11,11 +11,10 @@ for (var i = 0; i < nodes.length; i++) {
   IPs.push(nodes[i].address + ':' + path);
 } 
 
-var servers = '{"SERVERS":"'+IPs.join(' ')+'"}';
 resp = [];
 for (var i = 0; i < nodes.length; i++) { 
     if (nodes[i].nodeGroup != nodeGroup) continue; 
-    resp.push(jelastic.env.control.SetDockerRunCmd(envName, session, nodes[i].id, servers + " --address :$PORT"));
+    resp.push(jelastic.env.control.SetDockerRunCmd(envName, session, nodes[i].id, IPs.join(' ') + " --address :$PORT"));
 }
 
 return {
