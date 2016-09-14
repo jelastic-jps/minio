@@ -15,7 +15,7 @@ var servers = '{"SERVERS":"'+IPs.join(' ')+'"}';
 resp = [];
 for (var i = 0; i < nodes.length; i++) { 
     if (nodes[i].nodeGroup != nodeGroup) continue; 
-    resp.push(jelastic.env.control.SetDockerEnvVars(envName, session, nodes[i].id, servers));
+    resp.push(jelastic.env.control.SetDockerRunCmd(envName, session, nodes[i].id, servers + " --address :$PORT"));
 }
 
 return {
