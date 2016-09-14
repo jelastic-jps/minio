@@ -9,9 +9,17 @@ S3 compatible object storage server in Docker containers
 
 ![Minio Logo](images/jelastic-minio-ha-cluster.png)
 
-### Deploy 
+### Deployment 
+
+#### Try free in public cloud 
 
 [![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/manifest.jps) 
+
+#### Import in private cloud 
+
+Press Import button and insert or upload <a href="manifest.jps">manifest.jps</a>. JSON tab provides inline editing.  
+
+<img src="images/import-jps-manifest.png" width="300" alt="Minio HA Cluster">
 
 ### Logs and Troubleshooting
 - Logs https://docs.jelastic.com/view-log-files
