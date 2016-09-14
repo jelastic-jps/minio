@@ -3,11 +3,11 @@
 S3 compatible object storage server in Docker containers
 
 ### Topology
-<img src="https://docs.google.com/drawings/d/1h9G0YddASUdZGdnSofP5U58gT1ITDSVaml8CMB7Snr4/pub?w=720&h=280" width="500" alt="Minio Cluster based on NFS">
+<img src="https://docs.google.com/drawings/d/1LEF4QqxPzN36SkTygtSHJCCFeft1dOg9K9oewVtNCX0/pub?w=716&h=169" width="500" alt="Minio HA Cluster">
 
 ### Setup 
 
-![Minio Logo](images/jelastic-minio-s3-storage-container.png)
+![Minio Logo](images/jelastic-minio-ha-cluster.png)
 
 ### Deploy 
 
