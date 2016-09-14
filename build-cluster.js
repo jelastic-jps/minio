@@ -16,9 +16,7 @@ for (var i = 0; i < nodes.length; i++) {
     resp.push(jelastic.env.control.SetDockerEnvVars(envName, session, nodes[i].id, '{"SERVERS":'+IPs.join(' ')+'}'));
 }
 
-
-
 return {
     result: 0,
-    response: resp
+    response: {a: 1, resp: resp}
 }
