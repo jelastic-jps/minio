@@ -43,7 +43,7 @@
 					"cloudlets": 16,
 					"nodeGroup": "cp",
 					"docker": {
-						"image": "sych74/minio:test",
+						"image": "minio/minio:edge",
 						"env": {
 							"MINIO_ACCESS_KEY": "${settings.accessKey}",
 							"MINIO_SECRET_KEY": "${settings.secretKey}",
