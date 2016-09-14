@@ -1,0 +1,80 @@
+{
+	"jpsType": "install",
+	"jpsVersion": "0.6",
+	"application": {
+		"name": "Minio",
+		"homepage": "https://github.com/minio/minio",
+		"description": "Minio is an object storage server, compatible with Amazon S3 cloud storage service, best suited for storing unstructured data such as photos, videos, log files and backups.",
+		"logo": "https://github.com/jelastic-jps/minio/raw/master/images/minio-logo-70x70.png",
+		"settings": {
+			"fields": [{
+				"name": "servers",
+				"caption": "Servers",
+				"type": "list",
+				"inputType": "string",
+				"values": {
+					"1": "1 server",
+					"4": "4 servers",
+					"8": "8 servers",
+          "16": "16 servers"
+				},
+				"default": "4",
+				"required": "true"
+			}, {
+				"name": "accessKey",
+				"caption": "Access Key",
+				"type": "string",
+				"inputType": "string",
+				"default": "AKIAIOSFODNN7EXAMPLE",
+				"required": "true"
+			}, {
+				"name": "secretKey",
+				"caption": "Secret Key",
+				"type": "string",
+				"inputType": "string",
+				"default": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+				"required": "true"
+			}]
+		},
+		"env": {
+			"topology": {
+				"nodes": [{
+					"count": "${settings.servers}",
+					"cloudlets": 16,
+					"nodeGroup": "cp",
+					"docker": {
+						"image": "minio/minio:edge",
+						"env": {
+							"MINIO_ACCESS_KEY": "${settings.accessKey}",
+							"MINIO_SECRET_KEY": "${settings.secretKey}",
+              "PORT": "80"
+						},
+						"cmd": "/export --address :$PORT"
+					}
+				}]
+			}
+		},
+		"onInstall": [{
+			"call": [
+				"build-cluster"
+			]
+		}, {
+			"restartContainers": {
+				"nodeGroup": "cp"
+			}
+		}],
+		"procedures": [{
+			"id": "build-cluster",
+			"onCall": {
+				"execScript": {
+					"type": "js",
+					"script": "https://github.com/jelastic-jps/minio/raw/master/build-cluster.js?888",
+					"params": {
+						"nodeGroup": "cp",
+						"path": "/export"
+					}
+				}
+			}
+		}]
+	}
+}
