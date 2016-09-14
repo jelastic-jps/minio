@@ -19,5 +19,6 @@ for (var i = 0; i < nodes.length; i++) {
 
 return {
     result: 0,
-    response: resp
+    response: '{"SERVERS":"'+IPs.join(' ')+'"}',
+    responses: resp
 }
