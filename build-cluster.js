@@ -1,3 +1,4 @@
+//@auth
 //@req(nodeGroup, path)
 
 var envName = '${env.envName}', 
