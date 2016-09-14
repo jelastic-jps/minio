@@ -2,8 +2,7 @@
 //@req(nodeGroup, path)
 
 var envName = '${env.envName}', 
-resp = jelastic.env.control.GetEnvInfo(envName, session),
-nodes = resp.nodes, 
+nodes = jelastic.env.control.GetEnvInfo(envName, session).nodes,
 IPs = [], resp = [];
 
 for (var i = 0; i < nodes.length; i++) { 
