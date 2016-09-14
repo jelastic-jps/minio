@@ -1,10 +1,10 @@
 //@auth
 //@req(nodeGroup, path)
 
-var envName = '${env.envName}', 
-resp = jelastic.env.control.GetEnvInfo(envName, session),
-nodes = resp.nodes, 
-IPs = [];
+var envName = '${env.envName}'; 
+var resp = jelastic.env.control.GetEnvInfo(envName, session);
+return resp;
+var nodes = resp.nodes, IPs = [];
 
 for (var i = 0; i < nodes.length; i++) { 
   if (nodes[i].nodeGroup != nodeGroup) continue; 
