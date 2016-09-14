@@ -14,11 +14,10 @@ for (var i = 0; i < nodes.length; i++) {
 resp = [];
 for (var i = 0; i < nodes.length; i++) { 
     if (nodes[i].nodeGroup != nodeGroup) continue; 
-    resp.push(jelastic.env.control.SetDockerEnvVars(envName, session, nodes[i].id, '{"SERVERS":"'+IPs.join(' ')+'"}'));
+    resp.push(jelastic.env.control.SetDockerEnvVars(envName, session, nodes[i].id, '{SERVERS:"'+IPs.join(' ')+'"}'));
 }
 
 return {
     result: 0,
-    response: resp,
-    data: '{"SERVERS":"'+IPs.join(' ')+'"}'
+    response: resp
 }
