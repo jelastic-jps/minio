@@ -49,7 +49,7 @@
 							"MINIO_SECRET_KEY": "${settings.secretKey}",
 							"PORT": "80"
 						},
-						"cmd": "/export --address :$PORT"
+						"cmd": "--help"
 					}
 				}]
 			}
