@@ -71,7 +71,7 @@
 					"script": "https://github.com/jelastic-jps/minio/raw/master/build-cluster.js",
 					"params": {
 						"nodeGroup": "cp",
-						"path": "/export"
+						"volumePath": "/export"
 					}
 				}
 			}
