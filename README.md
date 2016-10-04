@@ -3,7 +3,8 @@
 S3 compatible object storage server in Docker containers
 
 ### Topology
-<img src="https://docs.google.com/drawings/d/1LEF4QqxPzN36SkTygtSHJCCFeft1dOg9K9oewVtNCX0/pub?w=716&h=169" width="500" alt="Minio HA Cluster">
+<!--img src="https://docs.google.com/drawings/d/1LEF4QqxPzN36SkTygtSHJCCFeft1dOg9K9oewVtNCX0/pub?w=716&h=169" width="500" alt="Minio HA Cluster"-->
+<img src="images/minio-xl-topology.png" width="" alt="Minio HA Cluster">
 
 ### Setup Wizard
 
