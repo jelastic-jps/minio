@@ -1,6 +1,6 @@
 {
 	"jpsType": "install",
-	"jpsVersion": "0.6",
+	"jpsVersion": "0.9",
 	"application": {
 		"name": "Minio",
 		"homepage": "https://github.com/minio/minio",
