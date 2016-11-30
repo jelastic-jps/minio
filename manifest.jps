@@ -2,6 +2,7 @@
 	"jpsType": "install",
 	"jpsVersion": "0.8",
 	"application": {
+		"id": "minio",
 		"name": "Minio",
 		"homepage": "https://github.com/minio/minio",
 		"description": "Minio is an object storage server, compatible with Amazon S3 cloud storage service, best suited for storing unstructured data such as photos, videos, log files and backups.",
@@ -76,6 +77,7 @@
 				}
 			}
 		}],
-		"success": "Instance address: <a href='${env.url}' target='_blank'>${env.url}</a> </br></br>To add custom domain name for your Minio installation follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>"
+		"text": "Admin Panel: <a href='${env.url}' target='_blank'>${env.url}</a></br></br>To add custom domain name for your Minio installation follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>"
+		"success": "Admin Panel: <a href='${env.url}' target='_blank'>${env.url}</a></br></br>To add custom domain name for your Minio installation follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>"
 	}
 }
