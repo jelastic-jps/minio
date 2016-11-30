@@ -15,7 +15,7 @@ if (IPs.length == 1) IPs[0] = volumePath;
   
 for (var i = 0; i < nodes.length; i++) { 
       if (nodes[i].nodeGroup != nodeGroup) continue; 
-      resp.push(jelastic.env.control.SetDockerRunCmd(envName, session, nodes[i].id, IPs.join(' ') + " --address :$PORT"));
+      resp.push(jelastic.env.control.SetDockerRunCmd(envName, session, nodes[i].id, "server " + IPs.join(' ') + " --address :$PORT"));
 }
 
 
