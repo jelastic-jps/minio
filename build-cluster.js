@@ -7,7 +7,7 @@ servers = [], resp = [], protocol = 'http' + (${env.ssl} ? 's' : '') + '://';
 
 for (var i = 0; i < nodes.length; i++) { 
   if (nodes[i].nodeGroup != nodeGroup) continue; 
-  servers.push(protocol + nodes[i].address + ':' + volumePath);
+  servers.push(protocol + nodes[i].address + volumePath);
 }
 
 //if there is only one server then we should specify only volumePath w/o IP
