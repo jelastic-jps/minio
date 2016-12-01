@@ -48,12 +48,12 @@
 						"env": {
 							"MINIO_ACCESS_KEY": "${settings.accessKey}",
 							"MINIO_SECRET_KEY": "${settings.secretKey}",
-							"PORT": "443"
+							"PORT": "80"
 						},
 						"cmd": "--help"
 					}
 				}],
-				"ssl": true
+				"ssl": false
 			}
 		},
 		"onInstall": [{
