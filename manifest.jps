@@ -48,7 +48,7 @@
 						"env": {
 							"MINIO_ACCESS_KEY": "${settings.accessKey}",
 							"MINIO_SECRET_KEY": "${settings.secretKey}",
-							"PORT": "80"
+							"PORT": "443"
 						},
 						"cmd": "--help"
 					}
