@@ -53,7 +53,7 @@
 						"cmd": "--help"
 					}
 				}],
-				"ssl": false
+				"ssl": true
 			}
 		},
 		"onInstall": [{
