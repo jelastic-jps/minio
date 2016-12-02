@@ -18,7 +18,6 @@ for (var i = 0; i < nodes.length; i++) {
       resp.push(jelastic.env.control.SetDockerRunCmd(envName, session, nodes[i].id, "server " + servers.join(' ') + " --address :$PORT"));
 }
 
-
 return {
     result: 0,
     responses: resp
