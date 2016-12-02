@@ -3,7 +3,7 @@
 
 var envName = '${env.envName}', 
 nodes = jelastic.env.control.GetEnvInfo(envName, session).nodes,
-servers = [], resp = [], protocol = 'http' + (${env.ssl} ? 's' : '') + '://';
+servers = [], resp = [], protocol = 'http'; //protocol = 'http' + (${env.ssl} ? 's' : '') + '://';
 
 for (var i = 0; i < nodes.length; i++) { 
   if (nodes[i].nodeGroup != nodeGroup) continue; 
