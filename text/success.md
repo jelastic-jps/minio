@@ -1,4 +1,4 @@
-Admin Panel: ${env.url}  
+Admin Panel: [${env.url}](${env.url})  
 Access Key: ${globals.accessKey}  
 Secret Key: ${globals.secretKey}  
 
