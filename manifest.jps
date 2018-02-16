@@ -4,8 +4,13 @@
     "id": "minio",
     "name": "Minio",
     "homepage": "https://github.com/minio/minio",
+    "baseUrl": "https://raw.githubusercontent.com/jelastic-jps/minio/master",
     "description": "Minio is an object storage server, compatible with Amazon S3 cloud storage service, best suited for storing unstructured data such as photos, videos, log files and backups.",
     "logo": "https://github.com/jelastic-jps/minio/raw/master/images/minio-logo-70x70.png",
+    "globals": {
+        "accessKey": "${fn.password}",
+        "secretKey": "${fn.password}"
+    },
     "settings": {
         "fields": [{
             "name": "servers",
@@ -20,20 +25,6 @@
             },
             "default": "4",
             "required": "true"
-        }, {
-            "name": "accessKey",
-            "caption": "Access Key",
-            "type": "string",
-            "inputType": "string",
-            "default": "AKIAIOSFODNN7EXAMPLE",
-            "required": "true"
-        }, {
-            "name": "secretKey",
-            "caption": "Secret Key",
-            "type": "string",
-            "inputType": "string",
-            "default": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-            "required": "true"
         }]
     },
     "nodes": [{
@@ -43,21 +34,19 @@
         "docker": {
             "image": "minio/minio",
             "env": {
-                "MINIO_ACCESS_KEY": "${settings.accessKey}",
-                "MINIO_SECRET_KEY": "${settings.secretKey}",
+                "MINIO_ACCESS_KEY": "${globals.accessKey}",
+                "MINIO_SECRET_KEY": "${globals.secretKey}",
                 "PORT": "80"
             },
             "cmd": "--help"
         }
     }],
     "ssl": true,
-    "onInstall": [
-        "build-cluster", {
-            "restartContainers": {
-                "nodeGroup": "cp"
-            }
+    "onInstall": ["build-cluster", {
+        "restartContainers": {
+            "nodeGroup": "cp"
         }
-    ],
+    }],
     "actions": {
         "build-cluster": {
             "script": "https://github.com/jelastic-jps/minio/raw/master/build-cluster.js",
@@ -67,6 +56,8 @@
             }
         }
     },
-    "text": "Admin Panel: <a href='${env.url}' target='_blank'>${env.url}</a><br/><br/>To add custom domain name for your Minio installation follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>",
-    "success": "Admin Panel: <a href='${env.url}' target='_blank'>${env.url}</a><br/><br/>To add custom domain name for your Minio installation follow the steps described in our <a href='http://docs.jelastic.com/custom-domains' target='_blank'>documentation</a>"
+    "success": {
+        "text": "/text/success.md",
+        "email": "/text/success.md"
+    }
 }
