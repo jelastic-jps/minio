@@ -8,7 +8,7 @@ S3 compatible object storage server in Docker containers
 
 ### Setup Wizard
 
-![Minio Logo](images/jelastic-minio-ha-cluster.png)
+![Minio Logo](images/jelastic-minio-s3-cluster.png)
 
 ### Deployment 
 
