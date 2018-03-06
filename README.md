@@ -14,7 +14,7 @@ Log into your Jelastic account and [import](https://docs.jelastic.com/environmen
 
 > **Note:** Alternatively, you can find this solution within [Jelastic Marketplace](https://docs.jelastic.com/marketplace) or use the following button to automatically register on one of the [public Platforms](https://jelastic.cloud/) and immediately initiate Minio Cluster installation:
 > 
->  ![Deploy](/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/manifest.jps&min-version=4.6)
+> [![Deploy](/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/manifest.jps&min-version=4.6)
 
 Within the appeared form, you need to fetch the next data:
 * **Number of nodes** - specify the required cluster size by choosing among the predefined options to create 1 (for development), 4, 8 or 16 Minio nodes - each of them will be handled in a separate container, which are distributed across available hardware servers to gain [high availability](https://docs.jelastic.com/isolated-containers?utm_source=minio-cluster#b)
