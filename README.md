@@ -4,7 +4,7 @@ The **Minio Cluster** solution by Jelastic automates creation of a scalable and 
 
 ![Minio S3 Cluster](images/minio-s3-cluster.png)
 
-Refer to the appropriate Minio Cluster article to get a detailed overview of this solution.
+Refer to the appropriate [Minio Cluster article](https://jelastic.com/blog/s3-minio-cloud-storage-cluster-in-containers/) to get a detailed overview of this solution.
 
 ## Minio Cluster Installation
 
