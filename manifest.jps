@@ -10,7 +10,7 @@
         "short": "Automated clusterization for a reliable and cost-effective Minio storage to keep your unstructured data in a cloud."
     },
     "logo": "https://github.com/jelastic-jps/minio/raw/master/images/minio-logo-70x70.png",
-    "categories": ["apps/dev-and-admin-tools", "apps/dev-tools"],
+    "categories": ["apps/file-manager"],
     "globals": {
         "accessKey": "${fn.password}",
         "secretKey": "${fn.password}"
