@@ -45,6 +45,7 @@ nodes:
     MINIO_SECRET_KEY: ${globals.secretKey}
     PORT: 80
   cmd: --help
+  skipNodeEmails: true
   
 ssl: true
 
