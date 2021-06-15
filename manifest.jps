@@ -41,8 +41,6 @@ nodes:
   nodeType: minio
   password: ${globals.secretKey}
   env:
-    MINIO_ACCESS_KEY: ${globals.accessKey}
-    MINIO_SECRET_KEY: ${globals.secretKey}
     PORT: 80
   cmd: --help
   skipNodeEmails: true
@@ -50,6 +48,7 @@ nodes:
 ssl: true
 
 onInstall:
+  - cmd[cp]: jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
   - build-cluster
   - restartContainers [cp]
   
