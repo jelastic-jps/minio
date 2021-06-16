@@ -20,6 +20,7 @@ globals:
   accessKey: ${fn.password}
   secretKey: ${fn.password}
   port: 80
+  exportPath: /export
   
 settings:
   fields:
@@ -46,7 +47,10 @@ nodes:
 ssl: true
 
 onInstall:
-  - cmd[cp]: jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
+  - cmd[cp]: |-
+      jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
+      jem service stop
+      rm -rf /${globals.exportPath}/.minio.sys
     user: root
   - build-cluster
   - restartContainers [cp]
@@ -56,7 +60,7 @@ actions:
     script: build-cluster.js
     params:
       nodeGroup: cp
-      volumePath: /export
+      volumePath: ${globals.exportPath}
       port: ${globals.port}
       
 success:
