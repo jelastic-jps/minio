@@ -19,6 +19,7 @@ description:
 globals:
   accessKey: ${fn.password}
   secretKey: ${fn.password}
+  port: 80
   
 settings:
   fields:
@@ -40,9 +41,6 @@ nodes:
   nodeGroup: cp
   nodeType: minio
   password: ${globals.secretKey}
-  env:
-    PORT: 80
-  cmd: --help
   skipNodeEmails: true
   
 ssl: true
@@ -59,6 +57,7 @@ actions:
     params:
       nodeGroup: cp
       volumePath: /export
+      port: ${globals.port}
       
 success:
   text: /text/success.md
