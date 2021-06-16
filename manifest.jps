@@ -3,7 +3,7 @@ version: 1.5
 id: minio
 name: Minio Cluster
 homepage: https://github.com/jelastic-jps/minio
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/minio/master
+baseUrl: https://raw.githubusercontent.com/dimkadt/minio/master
 logo: images/minio-logo-70x70.png
 
 categories: [ apps/file-manager ]
