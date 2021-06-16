@@ -49,6 +49,7 @@ ssl: true
 
 onInstall:
   - cmd[cp]: jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
+    user: root
   - build-cluster
   - restartContainers [cp]
   
