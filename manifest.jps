@@ -44,6 +44,8 @@ nodes:
     MINIO_SECRET_KEY: ${globals.secretKey}
     PORT: 80
   cmd: --help
+  volumes: 
+    - /export/
   
 ssl: true
 
