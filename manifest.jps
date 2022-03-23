@@ -20,6 +20,7 @@ globals:
   accessKey: ${fn.password}
   secretKey: ${fn.password}
   port: 80
+  consolePort: 4949
   exportPath: /export
   
 settings:
@@ -40,18 +41,14 @@ nodes:
   count: ${settings.nodes}
   cloudlets: 16
   nodeGroup: cp
-  nodeType: minio
+  image: devbeta.d.jele.io/minio:RELEASE.2022-03-22T02-05-10Z
   password: ${globals.secretKey}
   skipNodeEmails: true
-  
-ssl: true
 
 onInstall:
-  - cmd[cp]: |-
-      jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
-      jem service stop
-      rm -rf /${globals.exportPath}/.minio.sys
-    user: root
+  - forEach(nodes.cp):
+    - setPassword:
+        id: ${@i.id}
   - build-cluster
   - restartContainers [cp]
   
@@ -62,6 +59,13 @@ actions:
       nodeGroup: cp
       volumePath: ${globals.exportPath}
       port: ${globals.port}
+      consolePort: ${globals.consolePort}
+  setPassword:
+    cmd[${this.id}]: |-
+      jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
+      jem service stop
+      rm -rf /${globals.exportPath}/.minio.sys
+    user: root
       
 success:
   text: /text/success.md
