@@ -46,12 +46,14 @@ nodes:
   skipNodeEmails: true
 
 onInstall:
-  - forEach(nodes.cp):
-    - setPassword:
-        id: ${@i.id}
+  - cmd[cp]: |-
+      jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
+      jem service stop
+      rm -rf /${globals.exportPath}/.minio.sys
+    user: root
   - build-cluster
   - restartContainers [cp]
-  
+
 actions:
   build-cluster:
     script: build-cluster.js
@@ -60,13 +62,7 @@ actions:
       volumePath: ${globals.exportPath}
       port: ${globals.port}
       consolePort: ${globals.consolePort}
-  setPassword:
-    cmd[${this.id}]: |-
-      jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
-      jem service stop
-      rm -rf /${globals.exportPath}/.minio.sys
-    user: root
-      
+
 success:
   text: /text/success.md
   email: /text/success.md
