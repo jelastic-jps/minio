@@ -44,6 +44,9 @@ nodes:
   image: devbeta.d.jele.io/minio:RELEASE.2022-03-22T02-05-10Z
   password: ${globals.secretKey}
   skipNodeEmails: true
+  validation:
+      maxCount: ${settings.nodes}
+      minCount: ${settings.nodes}
 
 onInstall:
   - cmd[cp]: |-
