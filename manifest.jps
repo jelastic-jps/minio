@@ -3,7 +3,7 @@ version: 1.5
 id: minio
 name: Minio Cluster
 homepage: https://github.com/jelastic-jps/minio
-baseUrl: https://raw.githubusercontent.com/dimkadt/minio/master
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/minio/master
 logo: images/minio-logo-70x70.png
 
 categories: [ apps/file-manager ]
@@ -41,7 +41,7 @@ nodes:
   count: ${settings.nodes}
   cloudlets: 16
   nodeGroup: cp
-  image: devbeta.d.jele.io/minio:RELEASE.2022-03-22T02-05-10Z
+  image: jelastic/minio:RELEASE.2022-03-22T02-05-10Z
   password: ${globals.secretKey}
   skipNodeEmails: true
   validation:
