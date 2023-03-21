@@ -15,7 +15,8 @@ if (servers.length == 1) servers[0] = volumePath;
   
 for (var i = 0; i < nodes.length; i++) { 
       if (nodes[i].nodeGroup != nodeGroup) continue; 
-      resp.push(jelastic.env.file.ReplaceInBody(envName, session, '/etc/default/minio', '^MINIO_VOLUMES=.*', "MINIO_VOLUMES=" + servers.join(' ') + " --address :" + port + " --console-address :" + consolePort, 1, null, null, false, nodes[i].id ));
+      resp.push(jelastic.env.file.ReplaceInBody(envName, session, '/etc/default/minio', '^MINIO_VOLUMES=.*', "MINIO_VOLUMES=\"" + servers.join(' ') + "\"", 1, null, null, false, nodes[i].id ));
+      resp.push(jelastic.env.file.ReplaceInBody(envName, session, '/etc/default/minio', '^MINIO_OPTS=.*', "MINIO_OPTS=\" --address :" + port + " --console-address :" + consolePort + "\"", 1, null, null, false, nodes[i].id ));
 }
 
 return {
