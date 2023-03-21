@@ -41,7 +41,7 @@ nodes:
   count: ${settings.nodes}
   cloudlets: 16
   nodeGroup: cp
-  image: devbeta.d.jele.io/minio:RELEASE.2023-02-27T18-10-45Z
+  image: jelatic/minio:RELEASE.2023-02-27T18-10-45Z
   password: ${globals.secretKey}
   skipNodeEmails: true
   validation:
