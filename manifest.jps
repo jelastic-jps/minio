@@ -54,6 +54,8 @@ onInstall:
       jem service stop
       rm -rf /${globals.exportPath}/.minio.sys
     user: root
+  - cmd[cp]: |-
+      echo "MINIO_SERVER_URL=${env.protocol}://${env.domain}" >> /etc/default/minio
   - build-cluster
   - restartContainers [cp]
 
