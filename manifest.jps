@@ -56,6 +56,7 @@ onInstall:
     user: root
   - cmd[cp]: |-
       echo "MINIO_SERVER_URL=${env.protocol}://${env.domain}" >> /etc/default/minio
+      echo "MINIO_BROWSER_REDIRECT_URL=${env.protocol}://${env.domain}" >> /etc/default/minio
   - build-cluster
   - restartContainers [cp]
 
