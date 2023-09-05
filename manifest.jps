@@ -3,7 +3,7 @@ version: 1.5
 id: minio
 name: Minio Cluster
 homepage: https://github.com/jelastic-jps/minio
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/minio/master
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/minio/JE-63662
 logo: images/minio-logo-70x70.png
 
 categories: [ apps/file-manager ]
@@ -22,6 +22,19 @@ globals:
   port: 80
   consolePort: 4949
   exportPath: /export
+  DEPLOY_HOOK: /root/deployLE.sh
+  UNDEPLOY_HOOK: /root/undeployLE.sh
+  DEPLOY_HOOK_JS: ${baseUrl}/scripts/deployHook.js
+  
+onBeforeInit: |
+  var settings = jps.settings;
+  var fields = settings.fields;
+  var quotas = jelastic.billing.account.GetQuotas('environment.externalip.enabled' + ";" + 'environment.maxcloudletsperrec').array;
+  for (var i = 0; i < quotas.length; i++){
+    var q = quotas[i], n = toNative(q.quota.name);
+    if (n == 'environment.externalip.enabled' && !q.value) { fields.splice(0,1); };
+  }
+  return { result: 0, settings: settings };
   
 settings:
   fields:
@@ -36,7 +49,11 @@ settings:
         16: 16 nodes
       default: 4
       required: true
-    
+    - type: checkbox
+      name: le-addon
+      caption: Install Let's Encrypt Certificates and Custom Domains Addon. Public IP is required.
+      value: false 
+         
 nodes:
   count: ${settings.nodes}
   cloudlets: 16
@@ -48,6 +65,14 @@ nodes:
       maxCount: ${settings.nodes}
       minCount: ${settings.nodes}
 
+onAfterChangeTopology:
+  - if (${event.response.response.env.sslstate}):
+      setSSL:
+        value: 1
+  - else:
+      setSSL:
+        value: 0
+
 onInstall:
   - cmd[cp]: |-
       jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
@@ -58,6 +83,15 @@ onInstall:
       echo "MINIO_SERVER_URL=${env.protocol}://${env.domain}" >> /etc/default/minio
       echo "MINIO_BROWSER_REDIRECT_URL=${env.protocol}://${env.domain}:4949" >> /etc/default/minio
   - build-cluster
+  - if (!${settings.le-addon:false}):
+    - installAddon:
+        id: letsencrypt-ssl-addon
+        nodeGroup: cp
+  - if (${settings.le-addon:false}): 
+      - install-LE:
+          skipEnvs: true
+      - setGlobals:
+          PROTOCOL: https
   - restartContainers [cp]
 
 actions:
@@ -68,6 +102,59 @@ actions:
       volumePath: ${globals.exportPath}
       port: ${globals.port}
       consolePort: ${globals.consolePort}
+    
+  install-LE:
+    - cmd[cp]: |-
+        printf '#!/bin/bash
+        mkdir -p /export/.minio/certs/
+        cp /var/lib/jelastic/keys/privkey.pem /export/.minio/certs/private.key
+        cp /var/lib/jelastic/keys/fullchain.pem /export/.minio/certs/public.crt
+        sed -i "s|MINIO_SERVER_URL=http://|MINIO_SERVER_URL=https://|g" /etc/default/minio
+        sed -i "s|MINIO_BROWSER_REDIRECT_URL=http://|MINIO_BROWSER_REDIRECT_URL=https://|g" /etc/default/minio
+        sed -i "s|MINIO_OPTS=.*|MINIO_OPTS=\\" --address :443 --console-address :4949 --certs-dir /export/.minio/certs\\"|g" /etc/default/minio
+        service minio restart' > ${globals.DEPLOY_HOOK}
+        
+        printf '#!/bin/bash
+        sed -i "s|MINIO_SERVER_URL=https://|MINIO_SERVER_URL=http://|g" /etc/default/minio
+        sed -i "s|MINIO_BROWSER_REDIRECT_URL=https://|MINIO_BROWSER_REDIRECT_URL=http://|g" /etc/default/minio
+        sed -i "s|MINIO_OPTS=.*|MINIO_OPTS=\\" --address :80 --console-address :4949\\"|g" /etc/default/minio
+        service minio restart' > ${globals.UNDEPLOY_HOOK}
+    - install:
+      jps: https://raw.githubusercontent.com/jelastic-jps/lets-encrypt/master/manifest.jps?_r=${fn.random}
+      nodeGroup: cp
+      settings:
+        deployHook: ${globals.DEPLOY_HOOK_JS}
+        deployHookType: js
+        undeployHook: ${globals.DEPLOY_HOOK_JS}
+        undeployHookType: js
+        customDomains: ${env.domain}
+        
+  setSSL:
+    cmd[cp]: |-
+      CONFIG="/etc/default/minio";
+      [[ "${this.value}" -eq 1 ]] && {
+        sed -i "s|MINIO_SERVER_URL=http://|MINIO_SERVER_URL=https://|g" $CONFIG
+        sed -i "s|MINIO_BROWSER_REDIRECT_URL=http://|MINIO_BROWSER_REDIRECT_URL=https://|g" $CONFIG
+        sed -i "s|--address :80|--address :443|g" $CONFIG
+      } || {
+        sed -i "s|MINIO_SERVER_URL=https://|MINIO_SERVER_URL=http://|g" $CONFIG
+        sed -i "s|MINIO_BROWSER_REDIRECT_URL=https://|MINIO_BROWSER_REDIRECT_URL=http://|g" $CONFIG
+        sed -i "s|--address :443|--address :80|g" $CONFIG
+      }
+      service minio restart
+
+add-ons:
+  - id: letsencrypt-ssl-addon
+    name: Let's Encrypt + Custom Domains
+    description: Press "Install" button to initiate installation procedure 
+    globals: 
+      HTTPS_PORT: 443
+    buttons:
+      - caption: Install 
+        action: install-LE
+        loadingText: Installing...
+        confirmText: Do you want to install Let's Encrypt addon?
+        successText: Let's Encrypt addon has been successfully installed!
 
 success:
   text: /text/success.md
