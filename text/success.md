@@ -1,4 +1,4 @@
-Admin Panel: [${env.url}](${env.url})  
+Admin Panel: [${globals.PROTOCOL:http}://${globals.DOMAIN}/](${globals.PROTOCOL:http}://${globals.DOMAIN}/)  
 Access Key: ${globals.accessKey}  
 Secret Key: ${globals.secretKey}  
 
