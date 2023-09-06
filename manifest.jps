@@ -65,6 +65,12 @@ nodes:
       maxCount: ${settings.nodes}
       minCount: ${settings.nodes}
 
+onAfterChangeTopology:
+  - if (${event.response.response.env.sslstate}):
+      cmd[cp]: iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 4949
+  - else:
+      cmd[cp]: iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 4949
+
 onInstall:
   - cmd[cp]: |-
       jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
