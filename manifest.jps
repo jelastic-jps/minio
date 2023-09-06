@@ -120,20 +120,6 @@ actions:
         undeployHook: ${globals.DEPLOY_HOOK_JS}
         undeployHookType: js
         customDomains: ${env.domain}
-        
-  setSSL:
-    cmd[cp]: |-
-      CONFIG="/etc/default/minio";
-      [[ "${this.value}" -eq 1 ]] && {
-        sed -i "s|MINIO_SERVER_URL=http://|MINIO_SERVER_URL=https://|g" $CONFIG
-        sed -i "s|MINIO_BROWSER_REDIRECT_URL=http://|MINIO_BROWSER_REDIRECT_URL=https://|g" $CONFIG
-        sed -i "s|--address :80|--address :443|g" $CONFIG
-      } || {
-        sed -i "s|MINIO_SERVER_URL=https://|MINIO_SERVER_URL=http://|g" $CONFIG
-        sed -i "s|MINIO_BROWSER_REDIRECT_URL=https://|MINIO_BROWSER_REDIRECT_URL=http://|g" $CONFIG
-        sed -i "s|--address :443|--address :80|g" $CONFIG
-      }
-      service minio restart
 
 addons:
   - id: letsencrypt-ssl-addon
