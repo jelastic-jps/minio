@@ -3,7 +3,7 @@ version: 1.5
 id: minio
 name: Minio Cluster
 homepage: https://github.com/jelastic-jps/minio
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/minio/JE-63662
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/minio/master
 logo: images/minio-logo-70x70.png
 
 categories: [ apps/file-manager ]
@@ -64,14 +64,6 @@ nodes:
   validation:
       maxCount: ${settings.nodes}
       minCount: ${settings.nodes}
-
-onAfterChangeTopology:
-  - if (${event.response.response.env.sslstate}):
-      setSSL:
-        value: 1
-  - else:
-      setSSL:
-        value: 0
 
 onInstall:
   - cmd[cp]: |-
@@ -143,7 +135,7 @@ actions:
       }
       service minio restart
 
-add-ons:
+addons:
   - id: letsencrypt-ssl-addon
     name: Let's Encrypt + Custom Domains
     description: Press "Install" button to initiate installation procedure 
