@@ -29,12 +29,8 @@ globals:
 onBeforeInit: |
   var settings = jps.settings;
   var fields = settings.fields;
-  var quotas = jelastic.billing.account.GetQuotas('environment.externalip.enabled' + ";" + 'environment.maxcloudletsperrec').array;
-  for (var i = 0; i < quotas.length; i++){
-    var q = quotas[i], n = toNative(q.quota.name);
-    if (n == 'environment.externalip.enabled' && !q.value) { 
-      settings.fields = fields.filter(function(item) { return item.name != "le-addon" }); 
-    }
+  if ("${quota.environment.externalip.enabled}" == 0) { 
+    settings.fields = fields.filter(function(item) { return item.name != "le-addon" }); 
   }
   return { result: 0, settings: settings };
   
