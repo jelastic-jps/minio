@@ -56,7 +56,7 @@ nodes:
   count: ${settings.nodes}
   cloudlets: 16
   nodeGroup: cp
-  image: devbeta.d.jele.io/minio:RELEASE.2024-07-16T23-46-41Z
+  image: devbeta.d.jele.io/minio:RELEASE.2024-07-16T23-46-41Z-almalinux-9
   password: ${globals.secretKey}
   skipNodeEmails: true
   validation:
