@@ -27,13 +27,20 @@ globals:
   DEPLOY_HOOK_JS: ${baseUrl}/scripts/deployHook.js
   
 onBeforeInit: |
+  function compareVersions(a, b) {a = a.split('.'), b = b.split('.'); for (var i = 0, l = Math.max(a.length, b.length); i < l; i++) {x = parseInt(a[i], 10) || 0; y = parseInt(b[i], 10) || 0; if (x != y) return x > y ? 1:-1 }; return 0;}
   var settings = jps.settings;
   var fields = settings.fields;
-  if ("${quota.environment.externalip.enabled}" == 0) { 
-    settings.fields = fields.filter(function(item) { return item.name != "le-addon" }); 
+  version = jelastic.system.service.GetVersion().version.split('-').shift()
+  if (compareVersions(version, '8.3') == -1) {
+    settings.fields.push([{type:'string', caption:'Image', hidden:true, name:'image', value:'jelastic/minio:RELEASE.2023-02-27T18-10-45Z'}])
+  } else {
+    if ("${quota.environment.externalip.enabled}" == 0) { 
+      settings.fields = fields.filter(function(item) { return item.name != "le-addon" }); 
+    }
+    settings.fields.push([{type:'string', caption:'Image', hidden:true, name:'image', value:'jelastic/minio:RELEASE.2024-07-16T23-46-41Z-almalinux-9'}])
   }
   return { result: 0, settings: settings };
-  
+
 settings:
   fields:
     - name: nodes
@@ -56,7 +63,7 @@ nodes:
   count: ${settings.nodes}
   cloudlets: 16
   nodeGroup: cp
-  image: devbeta.d.jele.io/minio:RELEASE.2024-07-16T23-46-41Z-almalinux-9
+  image: ${settings.image}
   password: ${globals.secretKey}
   skipNodeEmails: true
   validation:
