@@ -11,8 +11,8 @@ S3 compatible object storage server in Docker containers
 
 ### Deploy 
 
-[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://jelastic.com/install-application/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/nfs-volume-based/manifest.jps) 
+[![Deploy](https://github.com/jelastic-jps/git-push-deploy/raw/master/images/deploy-to-jelastic.png)](https://www.virtuozzo.com/install-application/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/nfs-volume-based/manifest.jps)
 
 ### Logs and Troubleshooting
-- Logs https://docs.jelastic.com/view-log-files
-- SSH Access https://docs.jelastic.com/ssh-access
+- Logs https://www.virtuozzo.com/application-platform-docs/view-log-files/
+- SSH Access https://www.virtuozzo.com/application-platform-docs/ssh-access/
