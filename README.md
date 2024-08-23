@@ -12,12 +12,12 @@ Log into your Virtuozzo Application Platform account and [import](https://www.vi
 
 ![Minio Cluster Installation](images/minio-cluster-installation.png)
 
-> **Note:** Alternatively, you can find this solution within [Virtuozzo Application Platform Marketplace](https://www.virtuozzo.com/application-platform-docs/marketplace/) or use the following button to automatically register on one of the [public Platforms](https://jelastic.cloud/) and immediately initiate Minio Cluster installation:
+> **Note:** Alternatively, you can find this solution within platform [Marketplace](https://www.virtuozzo.com/application-platform-docs/marketplace/) or use the following button to automatically register on one of the [public Platforms](https://www.virtuozzo.com/application-platform-partners/) and immediately initiate Minio Cluster installation:
 > 
-> [![Deploy](/images/deploy-to-jelastic.png)](https://www.virtuozzo.com/install-application/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/manifest.jps&min-version=4.6)
+> [![Deploy](images/deploy-to-cloud.png)](https://www.virtuozzo.com/install/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/manifest.jps&min-version=4.6)
 
 Within the appeared form, you need to fetch the next data:
-* **Number of nodes** - specify the required cluster size by choosing among the predefined options to create 1 (for development), 4, 8 or 16 Minio nodes - each of them will be handled in a separate container, which are distributed across available hardware servers to gain [high availability](https://www.virtuozzo.com/application-platform-docs/isolated-containers/?utm_source=minio-cluster#b)
+* **Number of nodes** - specify the required cluster size by choosing among the predefined options to create 1 (for development), 4, 8 or 16 Minio nodes - each of them will be handled in a separate container, which are distributed across available hardware servers to gain [high availability](https://www.virtuozzo.com/application-platform-docs/isolated-containers/#high-availability-for-applications)
 * **Environment** - type in the preferred name for your Minio storage cluster (which, together with your platform domain, will constitute an internal environment name)
 * **Display Name** - optionally, add an [alias name](https://www.virtuozzo.com/application-platform-docs/environment-aliases/) to be displayed for the environment in the dashboard
 * **Region** - select a [hardware set](https://www.virtuozzo.com/application-platform-docs/environment-regions/) for your environment to be hosted (this option is active only if several regions are available)
