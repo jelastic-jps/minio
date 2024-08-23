@@ -32,12 +32,13 @@ onBeforeInit: |
   var fields = settings.fields;
   version = jelastic.system.service.GetVersion().version.split('-').shift()
   if (compareVersions(version, '8.3') == -1) {
-    settings.fields.push([{type:'string', caption:'Image', hidden:true, name:'image', value:'jelastic/minio:RELEASE.2023-02-27T18-10-45Z'}])
+    settings.fields.push({type:'string', caption:'Image', hidden:true, name:'image', value:'jelastic/minio:RELEASE.2023-02-27T18-10-45Z'})
   } else {
     if ("${quota.environment.externalip.enabled}" == 0) { 
       settings.fields = fields.filter(function(item) { return item.name != "le-addon" }); 
     }
-    settings.fields.push([{type:'string', caption:'Image', hidden:true, name:'image', value:'jelastic/minio:RELEASE.2024-07-16T23-46-41Z-almalinux-9'}])
+    settings.fields.push({type:'string', caption:'Image', hidden:true, name:'image', value:'devbeta.d.jele.io/minio:RELEASE.2024-07-16T23-46-41Z-almalinux-9'});
+    settings.fields.push({type:'checkbox', caption:'Install Let\'s Encrypt Certificates and Custom Domains Addon. Public IP is required.', name:'le-addon', value:false});
   }
   return { result: 0, settings: settings };
 
@@ -54,10 +55,6 @@ settings:
         16: 16 nodes
       default: 4
       required: true
-    - type: checkbox
-      name: le-addon
-      caption: Install Let's Encrypt Certificates and Custom Domains Addon. Public IP is required.
-      value: false 
          
 nodes:
   count: ${settings.nodes}
@@ -72,9 +69,12 @@ nodes:
 
 onAfterChangeTopology:
   - if (${event.response.response.env.sslstate}):
-      cmd[cp]: iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 4949
+      cmd[cp]: nft insert rule ip nat PREROUTING ip saddr 0.0.0.0/0 ip daddr 0.0.0.0/0 tcp dport 80 counter redirect to 4949
   - else:
-      cmd[cp]: iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 4949
+      cmd[cp]: |-
+        for REDIRECT_HANDLE in $(/usr/sbin/nft -a list table ip nat 2>&1 | grep 'redirect to 4949'| grep 'dport 80' | sed -r 's/.*#\s+handle\s+([0-9]+)/\1/g' 2>/dev/null); do
+            /usr/sbin/nft delete rule $ip_table nat PREROUTING handle $REDIRECT_HANDLE >>$JEM_CALLS_LOG 2>&1;
+        done
 
 onInstall:
   - cmd[cp]: |-
