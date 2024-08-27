@@ -25,7 +25,8 @@ globals:
   DEPLOY_HOOK: /root/deployLE.sh
   UNDEPLOY_HOOK: /root/undeployLE.sh
   DEPLOY_HOOK_JS: ${baseUrl}/scripts/deployHook.js
-  
+  BUILD_SCRIPT: ${baseUrl}/scripts/build-cluster.js
+
 onBeforeInit: |
   function compareVersions(a, b) {a = a.split('.'), b = b.split('.'); for (var i = 0, l = Math.max(a.length, b.length); i < l; i++) {x = parseInt(a[i], 10) || 0; y = parseInt(b[i], 10) || 0; if (x != y) return x > y ? 1:-1 }; return 0;}
   var settings = jps.settings;
@@ -37,7 +38,7 @@ onBeforeInit: |
     if ("${quota.environment.externalip.enabled}" == 0) { 
       settings.fields = fields.filter(function(item) { return item.name != "le-addon" }); 
     }
-    settings.fields.push({type:'string', caption:'Image', hidden:true, name:'image', value:'devbeta.d.jele.io/minio:RELEASE.2024-07-16T23-46-41Z-almalinux-9'});
+    settings.fields.push({type:'string', caption:'Image', hidden:true, name:'image', value:'devbeta.d.jele.io/minio:RELEASE.2024-08-29T01-40-52Z-almalinux-9'});
     settings.fields.push({type:'checkbox', caption:'Install Let\'s Encrypt Certificates and Custom Domains Addon. Public IP is required.', name:'le-addon', value:false});
   }
   return { result: 0, settings: settings };
@@ -85,43 +86,41 @@ onInstall:
   - cmd[cp]: |-
       echo "MINIO_SERVER_URL=${env.protocol}://${env.domain}" >> /etc/default/minio
       echo "MINIO_BROWSER_REDIRECT_URL=${env.protocol}://${env.domain}:4949" >> /etc/default/minio
-  - build-cluster
-  - if (!${settings.le-addon:false}):
-    - installAddon:
-        id: letsencrypt-ssl-addon
-        nodeGroup: cp
   - if (${settings.le-addon:false}): 
       - install-LE:
           skipEnvs: true
-      - setGlobals:
-          PROTOCOL: https
-  - restartContainers [cp]
+  - else:
+      - build-cluster
+      - restartContainers [cp]
 
 actions:
   build-cluster:
-    script: build-cluster.js
+    script: ${globals.BUILD_SCRIPT}
     params:
       nodeGroup: cp
       volumePath: ${globals.exportPath}
       port: ${globals.port}
       consolePort: ${globals.consolePort}
-    
+
   install-LE:
+    - setGlobals:
+          PROTOCOL: https
     - cmd[cp]: |-
+        mkdir -p /home/jelastic/.minio/certs/host/
         printf '#!/bin/bash
-        mkdir -p /export/.minio/certs/
-        cp /var/lib/jelastic/keys/privkey.pem /export/.minio/certs/private.key
-        cp /var/lib/jelastic/keys/fullchain.pem /export/.minio/certs/public.crt
-        sed -i "s|MINIO_SERVER_URL=http://|MINIO_SERVER_URL=https://|g" /etc/default/minio
-        sed -i "s|MINIO_BROWSER_REDIRECT_URL=http://|MINIO_BROWSER_REDIRECT_URL=https://|g" /etc/default/minio
-        sed -i "s|MINIO_OPTS=.*|MINIO_OPTS=\\" --address :443 --console-address :4949 --certs-dir /export/.minio/certs\\"|g" /etc/default/minio
-        service minio restart' > ${globals.DEPLOY_HOOK}
+        chown -R minio-user:minio-user /home/jelastic/.minio/
+        sed -i "/MINIO_VOLUMES/s|http:|https:|g" /etc/default/minio
+        sed -i "/MINIO_SERVER_URL/s|http:|https:|g" /etc/default/minio
+        sed -i "/MINIO_BROWSER_REDIRECT_URL/s|http:|https:|g" /etc/default/minio
+        sed -i "s|MINIO_OPTS=.*|MINIO_OPTS=\\" --address :443 --console-address :4949 --certs-dir /home/jelastic/.minio/certs\\"|g" /etc/default/minio
+        ' > ${globals.DEPLOY_HOOK}
         
         printf '#!/bin/bash
-        sed -i "s|MINIO_SERVER_URL=https://|MINIO_SERVER_URL=http://|g" /etc/default/minio
-        sed -i "s|MINIO_BROWSER_REDIRECT_URL=https://|MINIO_BROWSER_REDIRECT_URL=http://|g" /etc/default/minio
+        sed -i "/MINIO_VOLUMES/s|https:|http:|g" /etc/default/minio
+        sed -i "/MINIO_SERVER_URL/s|https:|http:|g" /etc/default/minio
+        sed -i "/MINIO_BROWSER_REDIRECT_URL/s|https:|http:|g" /etc/default/minio
         sed -i "s|MINIO_OPTS=.*|MINIO_OPTS=\\" --address :80 --console-address :4949\\"|g" /etc/default/minio
-        service minio restart' > ${globals.UNDEPLOY_HOOK}
+        ' > ${globals.UNDEPLOY_HOOK}
     - install:
       jps: https://raw.githubusercontent.com/jelastic-jps/lets-encrypt/master/manifest.jps?_r=${fn.random}
       nodeGroup: cp
@@ -131,19 +130,8 @@ actions:
         undeployHook: ${globals.DEPLOY_HOOK_JS}
         undeployHookType: js
         customDomains: ${env.domain}
-
-addons:
-  - id: letsencrypt-ssl-addon
-    name: Let's Encrypt + Custom Domains
-    description: Press "Install" button to initiate installation procedure 
-    globals: 
-      HTTPS_PORT: 443
-    buttons:
-      - caption: Install 
-        action: install-LE
-        loadingText: Installing...
-        confirmText: Do you want to install Let's Encrypt addon?
-        successText: Let's Encrypt addon has been successfully installed!
+    - build-cluster
+    - restartContainers [cp]
 
 success:
   text: /text/success.md
