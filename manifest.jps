@@ -24,7 +24,7 @@ globals:
   exportPath: /export
   DEPLOY_HOOK: /root/deployLE.sh
   UNDEPLOY_HOOK: /root/undeployLE.sh
-  DEPLOY_HOOK_JS: ${}/scripts/deployHook.js
+  DEPLOY_HOOK_JS: ${baseUrl}/scripts/deployHook.js
   BUILD_SCRIPT: ${baseUrl}/scripts/build-cluster.js
 
 onBeforeInit: |
@@ -38,7 +38,7 @@ onBeforeInit: |
     if ("${quota.environment.externalip.enabled}" == 0) { 
       settings.fields = fields.filter(function(item) { return item.name != "le-addon" }); 
     }
-    settings.fields.push({type:'string', caption:'Image', hidden:true, name:'image', value:'devbeta.d.jele.io/minio:RELEASE.2024-08-29T01-40-52Z-almalinux-9'});
+    settings.fields.push({type:'string', caption:'Image', hidden:true, name:'image', value:'jelastic/minio:RELEASE.2024-08-29T01-40-52Z-almalinux-9'});
     settings.fields.push({type:'checkbox', caption:'Install Let\'s Encrypt Certificates and Custom Domains Addon. Public IP is required.', name:'le-addon', value:false});
   }
   return { result: 0, settings: settings };
