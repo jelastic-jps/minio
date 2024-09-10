@@ -3,7 +3,7 @@ version: 1.5
 id: minio
 name: Minio Cluster
 homepage: https://github.com/jelastic-jps/minio
-baseUrl: https://raw.githubusercontent.com/dimkadt/minio/JE-63662
+baseUrl: https://raw.githubusercontent.com/jelastic-jps/minio/master
 logo: images/minio-logo-70x70.png
 
 categories: [ apps/file-manager ]
@@ -24,7 +24,7 @@ globals:
   exportPath: /export
   DEPLOY_HOOK: /root/deployLE.sh
   UNDEPLOY_HOOK: /root/undeployLE.sh
-  DEPLOY_HOOK_JS: ${baseUrl}/scripts/deployHook.js
+  DEPLOY_HOOK_JS: ${}/scripts/deployHook.js
   BUILD_SCRIPT: ${baseUrl}/scripts/build-cluster.js
 
 onBeforeInit: |
