@@ -88,8 +88,8 @@ onBeforeResetNodePassword[cp]:
   - api: 
       method: message.email.Send
       to: "${user.email}"
-      subject: "Jenkins pasword was successfully reset for ${env.name}"
-      body: "<p><strong>Jenkins password was successfully reset for your ${env.name} environment.</strong></p><p><strong>Admin panel</strong>:&nbsp;${nodes.cp.master.adminUrl}</p><p><strong>User</strong>:&nbsp;${globals.user}</p><p><strong>Password</strong>:&nbsp;${globals.password}</p>"
+      subject: "Minio pasword was successfully reset for ${env.name}"
+      body: "<p><strong>Minio password was successfully reset for your ${env.name} environment.</strong></p><p><strong>User</strong>:&nbsp;${globals.accessKey}</p><p><strong>Password</strong>:&nbsp;${globals.secretKey}</p>"
 
 onInstall:
   - cmd[cp]: |-
