@@ -77,6 +77,20 @@ onAfterChangeTopology:
             /usr/sbin/nft delete rule $ip_table nat PREROUTING handle $REDIRECT_HANDLE >>$JEM_CALLS_LOG 2>&1;
         done
 
+onBeforeResetNodePassword[cp]:
+  - setGlobals:
+      accessKey: ${fn.password}
+      secretKey: ${fn.password}     
+  - cmd[cp]: |-
+      jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
+      jem service restart
+    user: root
+  - api: 
+      method: message.email.Send
+      to: "${user.email}"
+      subject: "Minio pasword was successfully reset for ${env.name}"
+      body: "<p><strong>Minio password was successfully reset for your ${env.name} environment.</strong></p><p><strong>User</strong>:&nbsp;${globals.accessKey}</p><p><strong>Password</strong>:&nbsp;${globals.secretKey}</p>"
+
 onInstall:
   - cmd[cp]: |-
       jem passwd set -p ${globals.secretKey} -u ${globals.accessKey}
