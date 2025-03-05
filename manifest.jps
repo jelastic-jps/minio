@@ -68,6 +68,15 @@ nodes:
       maxCount: ${settings.nodes}
       minCount: ${settings.nodes}
 
+onBeforeChangeTopology:
+  - script: |-
+      var state = ${event.params.env}.sslstate;
+      return {result: 0, state: state}
+  - if (${response.state}): 
+     - stopEvent:
+       type: warning
+       message: You can not use bilt-in ssl.
+
 onAfterChangeTopology:
   - if (${event.response.response.env.sslstate}):
       cmd[cp]: nft insert rule ip nat PREROUTING ip saddr 0.0.0.0/0 ip daddr 0.0.0.0/0 tcp dport 80 counter redirect to 4949
