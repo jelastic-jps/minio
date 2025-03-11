@@ -1,19 +1,19 @@
 type: install
 version: 1.5
 id: minio
-name: Minio Cluster
+name: MinIO Cluster
 homepage: https://github.com/jelastic-jps/minio
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/minio/master
+baseUrl: https://raw.githubusercontent.com/dimkadt/minio/master
 logo: images/minio-logo-70x70.png
 
 categories: [ apps/file-manager ]
 description:
   text: |
-    Minio is an object storage server, compatible with Amazon S3 cloud storage
+    MinIO is an object storage server, compatible with Amazon S3 cloud storage
     service, best suited for storing unstructured data such as photos, videos, log
     files and backups.
   short: |
-    Automated clusterization for a reliable and cost-effective Minio storage
+    Automated clusterization for a reliable and cost-effective MinIO storage
     to keep your unstructured data in a cloud.
 
 globals:
@@ -75,7 +75,7 @@ onBeforeChangeTopology:
   - if (${response.state}): 
      - stopEvent:
        type: warning
-       message: You can not use bilt-in ssl.
+       message: Built-in SSL cannot be enabled for this environment.
 
 onAfterChangeTopology:
   - if (${event.response.response.env.sslstate}):
@@ -97,8 +97,8 @@ onBeforeResetNodePassword[cp]:
   - api: 
       method: message.email.Send
       to: "${user.email}"
-      subject: "Minio pasword was successfully reset for ${env.name}"
-      body: "<p><strong>Minio password was successfully reset for your ${env.name} environment.</strong></p><p><strong>User</strong>:&nbsp;${globals.accessKey}</p><p><strong>Password</strong>:&nbsp;${globals.secretKey}</p>"
+      subject: "MinIO pasword was successfully reset for ${env.name}"
+      body: "<p><strong>MinIO password was successfully reset for your ${env.name} environment.</strong></p><p><strong>Username</strong>:&nbsp;${globals.accessKey}</p><p><strong>Password</strong>:&nbsp;${globals.secretKey}</p>"
 
 onInstall:
   - cmd[cp]: |-
