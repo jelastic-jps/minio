@@ -39,7 +39,7 @@ onBeforeInit: |
       settings.fields = fields.filter(function(item) { return item.name != "le-addon" }); 
     }
     settings.fields.push({type:'string', caption:'Image', hidden:true, name:'image', value:'jelastic/minio:RELEASE.2024-08-29T01-40-52Z-almalinux-9'});
-    settings.fields.push({type:'checkbox', caption:'Install Let\'s Encrypt Certificates and Custom Domains Addon. Public IP is required.', name:'le-addon', value:false});
+    settings.fields.push({type:'checkbox', caption:'Install Let\'s Encrypt Certificates and Custom Domains Addon. Public IP is required.', name:'le-addon', value:true});
   }
   return { result: 0, settings: settings };
 
@@ -75,7 +75,7 @@ onBeforeChangeTopology:
   - if (${response.state}): 
      - stopEvent:
        type: warning
-       message: Built-in SSL cannot be enabled for this environment.
+       message: Built-in SSL is not allowed for this environment.
 
 onAfterChangeTopology:
   - if (${event.response.response.env.sslstate}):
