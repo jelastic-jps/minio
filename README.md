@@ -1,3 +1,7 @@
+<p align="center"> 
+<img src="images/minio-logo-70x70.png" alt="MinIO Cluster Logo">
+</p>
+
 # MinIO Cluster
 
 The **MinIO Cluster** solution by Virtuozzo Application Platform automates creation of a scalable and cost-efficient object storage, which is fully compatible with the Amazon S3 (_Simple Storage Service_). The package utilizes [MinIO](https://www.minio.io/) microstorage architecture to interconnect a number of separate Docker containers to create a reliable cluster.
@@ -5,6 +9,9 @@ The **MinIO Cluster** solution by Virtuozzo Application Platform automates creat
 ![MinIO S3 Cluster](images/minio-s3-cluster.png)
 
 Refer to the appropriate [MinIO Cluster article](https://www.virtuozzo.com/company/blog/s3-minio-cloud-storage-cluster-in-containers/) to get a detailed overview of this solution.
+
+> **Note:** MinIO has officially moved its Community Edition into [maintenance mode](https://github.com/minio/minio/blob/master/README.md). No new features will be developed going forward. As a result, the _MinIO Cluster_ integration for Virtuozzo Application Platform will also be kept in maintenance mode.
+
 
 ## MinIO Cluster Installation
 
@@ -14,7 +21,7 @@ Log into your Virtuozzo Application Platform account and [import](https://www.vi
 
 > **Note:** Alternatively, you can find this solution within platform [Marketplace](https://www.virtuozzo.com/application-platform-docs/marketplace/) or use the following button to automatically register on one of the [public Platforms](https://www.virtuozzo.com/application-platform-partners/) and immediately initiate MinIO Cluster installation:
 > 
-> [![Deploy](images/deploy-to-cloud.png)](https://www.virtuozzo.com/install/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/manifest.jps&min-version=4.6)
+> [![Deploy](https://raw.githubusercontent.com/jelastic-jps/common/main/images/deploy-to-cloud.png)](https://www.virtuozzo.com/install/?manifest=https://raw.githubusercontent.com/jelastic-jps/minio/master/manifest.jps&min-version=4.6)
 
 Within the appeared form, you need to fetch the next data:
 * **Number of nodes** - specify the required cluster size by choosing among the predefined options to create 1 (for development), 4, 8 or 16 MinIO nodes - each of them will be handled in a separate container, which are distributed across available hardware servers to gain [high availability](https://www.virtuozzo.com/application-platform-docs/isolated-containers/#high-availability-for-applications)
